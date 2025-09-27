@@ -1,18 +1,9 @@
 package model;
 
-public class Admin {
-    private String name;
-    private String cpf;
+import java.time.LocalDate;
 
-    public Admin(String name, String cpf){
-        this.name = name;
-        this.cpf = cpf;
-    }
-
-    public String getName() {
-        return name;
-    }
-    public String getCpf() {
-        return cpf;
+public class Admin extends User{
+    public Admin(String cpf, String name, String numberOfTuition, LocalDate birthdate) {
+        super(cpf, name, numberOfTuition, birthdate);
     }
 }

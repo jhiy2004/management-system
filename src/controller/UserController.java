@@ -2,22 +2,52 @@ package controller;
 
 import catalog.Catalog;
 import model.Admin;
+import model.Owner;
+import model.User;
+
+import java.time.LocalDate;
 
 public class UserController {
-    public void addUser(String cpf, String name){
+    public boolean updateOwner(Owner owner, String cpf, String name, LocalDate birthdate, String numberOfTuition, String password) {
+        Catalog catalog = Catalog.getInstance();
+
+        if (!validateCpf(cpf) && catalog.cpfExists(cpf)){
+            return false;
+        }
+
+        owner.setCpf(cpf);
+        owner.setName(name);
+        owner.setBirthdate(birthdate);
+        owner.setNumberOfTuition(numberOfTuition);
+        owner.setPassword(password);
+
+        return true;
+    }
+
+    public void addMember(String cpf, String name, String numberOfTuition, LocalDate birthdate){
         Catalog catalog = Catalog.getInstance();
 
         if (!validateCpf(cpf) || catalog.cpfExists(cpf)) {
             return;
         }
 
-        catalog.insertUser(cpf, name);
+        catalog.insertMember(cpf, name, numberOfTuition, birthdate);
     }
 
-    public void removeUser(String cpf, Admin admin) {
+    public void addOwner(String cpf, String name, String numberOfTuition, LocalDate birthdate, String password) {
         Catalog catalog = Catalog.getInstance();
 
-        if (!isAdmin(admin)) {
+        if(!validateCpf(cpf) || catalog.cpfExists(cpf)) {
+            return;
+        }
+
+        catalog.insertOwner(cpf, name, numberOfTuition, birthdate, password);
+    }
+
+    public void removeMember(String cpf, User user) {
+        Catalog catalog = Catalog.getInstance();
+
+        if (!isAdmin(user)) {
             return;
         }
 
@@ -29,12 +59,12 @@ public class UserController {
             return;
         }
 
-        catalog.removeUser(cpf);
+        catalog.removeMember(cpf);
     }
 
     // Potentially unnecessary — consider refactoring or deleting
-    private boolean isAdmin(Admin admin) {
-        return true;
+    private boolean isAdmin(User user) {
+        return (user instanceof Admin);
     }
 
     private boolean validateCpf(String cpf) {

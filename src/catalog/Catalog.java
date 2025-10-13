@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class Catalog {
     private static Catalog instance = null;
+    private Company company;
     private final Map<String, Admin> admins;
     private final Map<String, Member> members;
     private final Map<String, Owner> owners;
@@ -62,6 +63,10 @@ public class Catalog {
         return this.managers.get(cpf);
     }
 
+    public Department getDepartmentByName(String name) {
+        return this.departments.get(name);
+    }
+
     public boolean cpfExists(String cpf) {
         return this.members.containsKey(cpf) ||
                 this.admins.containsKey(cpf) ||
@@ -93,5 +98,13 @@ public class Catalog {
         Department newDepartment = new Department(name);
 
         this.departments.put(name, newDepartment);
+    }
+
+    public void removeDepartment(String name) {
+        this.departments.remove(name);
+    }
+
+    public void addCompany(Company company) {
+        this.company = company;
     }
 }

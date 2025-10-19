@@ -5,13 +5,11 @@ import javax.swing.*;
 import catalog.Catalog;
 import controller.DepartmentController;
 import controller.UserController;
+import model.Admin;
 import model.Department;
 import model.Owner;
 import model.Session;
-import view.AddDepartmentForm;
-import view.EditDepartmentForm;
-import view.UpdateOwnerForm;
-import view.firstLoginForm;
+import view.*;
 
 import java.time.LocalDate;
 
@@ -20,13 +18,21 @@ public class Main {
         UserController userController = new UserController();
         DepartmentController departmentController = new DepartmentController();
 
-        // Simple test code
-        userController.addOwner("47868853808", "jose", "123", LocalDate.parse("2004-04-17"), "abcd1234");
-
         Catalog catalog = Catalog.getInstance();
+
+
+        // Simple test code
+        departmentController.createDepartment("Marketing");
+        departmentController.createDepartment("Math");
+
+        Department dpt1 = catalog.getDepartmentByName("Marketing");
+
+        userController.addAdmin("63965689002", "jose", "123", LocalDate.parse("2004-04-17"), "abcd1234", dpt1);
+        userController.addOwner("47868853808", "joao", "123", LocalDate.parse("2004-04-17"), "abcd1234");
+
+        Admin myAdmin = catalog.getAdminByCpf("63965689002");
         Owner myOwner = catalog.getOwnerByCpf("47868853808");
 
-        departmentController.createDepartment("Marketing");
         Department dpt = catalog.getDepartmentByName("Marketing");
         Session.setCurrentUser(myOwner);
         // End simple test
@@ -45,7 +51,17 @@ public class Main {
             frame.setContentPane(form.getPanel());
              */
 
+            /*
             EditDepartmentForm form = new EditDepartmentForm(dpt, departmentController, Session.getCurrentUser());
+            frame.setContentPane(form.getPanel());
+             */
+
+            /*
+            UpdateAdminForm form = new UpdateAdminForm(myAdmin, userController, departmentController);
+            frame.setContentPane(form.getPanel());
+            */
+
+            LoginForm form = new LoginForm(userController);
             frame.setContentPane(form.getPanel());
 
             frame.pack();

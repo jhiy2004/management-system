@@ -3,7 +3,9 @@ package catalog;
 import model.*;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Catalog {
@@ -47,6 +49,23 @@ public class Catalog {
         return managers;
     }
 
+    public Collection<Department> getDepartments() {
+        return departments.values();
+    }
+
+    public User getUserByCpf(String cpf) {
+        if (this.members.containsKey(cpf)) {
+            return this.members.get(cpf);
+        } else if (this.managers.containsKey(cpf)) {
+            return this.managers.get(cpf);
+        } else if (this.owners.containsKey(cpf)) {
+            return this.owners.get(cpf);
+        } else if (this.admins.containsKey(cpf)) {
+            return this.admins.get(cpf);
+        }
+        return null;
+    }
+
     public Admin getAdminByCpf(String cpf) {
         return this.admins.get(cpf);
     }
@@ -84,6 +103,12 @@ public class Catalog {
         Owner newOwner = new Owner(cpf, name, numberOfTuition, birthdate, password);
 
         this.owners.put(cpf, newOwner);
+    }
+
+    public void insertAdmin(String cpf, String name, String numberOfTuition, LocalDate birthdate, String password, Department department) {
+        Admin newAdmin = new Admin(cpf, name, numberOfTuition, birthdate, password, department);
+
+        this.admins.put(cpf, newAdmin);
     }
 
     public void removeMember(String cpf) {

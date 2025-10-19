@@ -1,14 +1,37 @@
 package controller;
 
 import catalog.Catalog;
-import model.Admin;
-import model.Company;
-import model.Owner;
-import model.User;
+import model.*;
 
 import java.time.LocalDate;
 
 public class UserController {
+    public LoginUser login(String cpf, String password) {
+        if (!validateCpf(cpf)) {
+            return null;
+        }
+
+        Catalog catalog = Catalog.getInstance();
+
+        if (!catalog.cpfExists(cpf)) {
+            return null;
+        }
+
+        User user = catalog.getUserByCpf(cpf);
+
+        // Garante que o usuário é do tipo LoginUser
+        if (!(user instanceof LoginUser loginUser)) {
+            return null;
+        }
+
+        if (!password.equals(loginUser.getPassword())) {
+            return null;
+        }
+
+        return loginUser;
+    }
+
+
     public boolean createCompany(String name, String cnpj, String email, LocalDate date) {
         Company company = new Company(name, cnpj, email, date);
 
@@ -39,6 +62,23 @@ public class UserController {
         return true;
     }
 
+    public boolean updateAdmin(Admin admin, String cpf, String name, LocalDate birthdate, String numberOfTuition, String password, Department department) {
+        Catalog catalog = Catalog.getInstance();
+
+        if (!validateCpf(cpf) && catalog.cpfExists(cpf)){
+            return false;
+        }
+
+        admin.setCpf(cpf);
+        admin.setName(name);
+        admin.setBirthdate(birthdate);
+        admin.setNumberOfTuition(numberOfTuition);
+        admin.setPassword(password);
+        admin.setDepartment(department);
+
+        return true;
+    }
+
     public void addMember(String cpf, String name, String numberOfTuition, LocalDate birthdate){
         Catalog catalog = Catalog.getInstance();
 
@@ -57,6 +97,16 @@ public class UserController {
         }
 
         catalog.insertOwner(cpf, name, numberOfTuition, birthdate, password);
+    }
+
+    public void addAdmin(String cpf, String name, String numberOfTuition, LocalDate birthdate, String password, Department department) {
+        Catalog catalog = Catalog.getInstance();
+
+        if(!validateCpf(cpf) || catalog.cpfExists(cpf)) {
+            return;
+        }
+
+        catalog.insertAdmin(cpf, name, numberOfTuition, birthdate, password, department);
     }
 
     public void removeMember(String cpf, User user) {

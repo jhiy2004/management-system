@@ -5,7 +5,21 @@ import model.Department;
 import model.Owner;
 import model.User;
 
+import java.util.Collection;
+
 public class DepartmentController {
+    public Collection<Department> getDepartments() {
+        Catalog catalog = Catalog.getInstance();
+
+        return catalog.getDepartments();
+    }
+
+    public Department getDepartmentByName(String name) {
+        Catalog catalog = Catalog.getInstance();
+
+        return catalog.getDepartmentByName(name);
+    }
+
     public void createDepartment(String name) {
         Catalog catalog = Catalog.getInstance();
 

@@ -65,10 +65,10 @@ public class UpdateOwnerForm {
 
             if (success) {
                 JOptionPane.showMessageDialog(panel,
-                        "User updated successfully: " + name + " (" + cpf + ")");
+                        "Owner atualizado com sucesso: " + name + " (" + cpf + ")");
             } else {
                 JOptionPane.showMessageDialog(panel,
-                        "Failed to update user. Please check the data and try again.",
+                        "Falha ao atualizar o Owner",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
             }

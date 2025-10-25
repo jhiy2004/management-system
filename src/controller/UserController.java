@@ -4,6 +4,7 @@ import catalog.Catalog;
 import model.*;
 
 import java.time.LocalDate;
+import java.util.Collection;
 
 public class UserController {
     public LoginUser login(String cpf, String password) {
@@ -31,6 +32,11 @@ public class UserController {
         return loginUser;
     }
 
+    public Collection<Member> getMembers() {
+        Catalog catalog = Catalog.getInstance();
+
+        return catalog.getMembers();
+    }
 
     public boolean createCompany(String name, String cnpj, String email, LocalDate date) {
         Company company = new Company(name, cnpj, email, date);
@@ -46,10 +52,25 @@ public class UserController {
         return true;
     }
 
+    public boolean updateMember(Member member, String cpf, String name, String numberOfTuition, LocalDate birthdate){
+        Catalog catalog = Catalog.getInstance();
+
+        if (!validateCpf(cpf) || (catalog.cpfExists(cpf) && catalog.getUserByCpf(cpf) != member)) {
+            return false;
+        }
+
+        member.setName(name);
+        member.setCpf(cpf);
+        member.setNumberOfTuition(numberOfTuition);
+        member.setBirthdate(birthdate);
+
+        return true;
+    }
+
     public boolean updateOwner(Owner owner, String cpf, String name, LocalDate birthdate, String numberOfTuition, String password) {
         Catalog catalog = Catalog.getInstance();
 
-        if (!validateCpf(cpf) && catalog.cpfExists(cpf)){
+        if (!validateCpf(cpf) || (catalog.cpfExists(cpf) && catalog.getUserByCpf(cpf) != owner)) {
             return false;
         }
 
@@ -65,7 +86,7 @@ public class UserController {
     public boolean updateAdmin(Admin admin, String cpf, String name, LocalDate birthdate, String numberOfTuition, String password, Department department) {
         Catalog catalog = Catalog.getInstance();
 
-        if (!validateCpf(cpf) && catalog.cpfExists(cpf)){
+        if (!validateCpf(cpf) || (catalog.cpfExists(cpf) && catalog.getUserByCpf(cpf) != admin)) {
             return false;
         }
 

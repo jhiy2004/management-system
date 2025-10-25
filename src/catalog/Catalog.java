@@ -33,20 +33,20 @@ public class Catalog {
         this.departments = new HashMap<>();
     }
 
-    public Map<String, Admin> getAdmins() {
-        return admins;
+    public Collection<Admin> getAdmins() {
+        return admins.values();
     }
 
-    public Map<String, Member> getMembers() {
-        return members;
+    public Collection<Member> getMembers() {
+        return members.values();
     }
 
-    public Map<String, Owner> getOwners() {
-        return owners;
+    public Collection<Owner> getOwners() {
+        return owners.values();
     }
 
-    public Map<String, Manager> getManagers() {
-        return managers;
+    public Collection<Manager> getManagers() {
+        return managers.values();
     }
 
     public Collection<Department> getDepartments() {

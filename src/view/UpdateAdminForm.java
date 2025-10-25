@@ -86,10 +86,10 @@ public class UpdateAdminForm {
 
             if (success) {
                 JOptionPane.showMessageDialog(panel,
-                        "User updated successfully: " + name + " (" + cpf + ")");
+                        "Admin atualizado com sucesso: " + name + " (" + cpf + ")");
             } else {
                 JOptionPane.showMessageDialog(panel,
-                        "Failed to update user. Please check the data and try again.",
+                        "Falha ao atualizar o admin.",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
             }

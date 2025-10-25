@@ -37,6 +37,8 @@ public class Main {
         Session.setCurrentUser(myOwner);
         // End simple test
 
+        boolean firstLogin = false;
+
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Management System");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,11 +63,16 @@ public class Main {
             frame.setContentPane(form.getPanel());
             */
 
-            LoginForm form = new LoginForm(userController);
-            frame.setContentPane(form.getPanel());
+            if (!firstLogin) {
+                LoginForm form = new LoginForm(frame, userController, departmentController);
+                frame.setContentPane(form.getPanel());
+            }else {
+                firstLoginForm form = new firstLoginForm(userController);
+                frame.setContentPane(form.getPanel());
+            }
 
             frame.pack();
-            frame.setLocationRelativeTo(null); // center on screen
+            frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
     }

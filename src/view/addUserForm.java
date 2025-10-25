@@ -40,14 +40,14 @@ public class addUserForm {
                         "Data inválida! Use o formato dd/MM/yyyy.",
                         "Erro",
                         JOptionPane.ERROR_MESSAGE);
-                return; // interrompe a execução se a data for inválida
+                return;
             }
 
             // Chama o controller
             controller.addMember(cpf, name, numberOfTuition, birthdate);
 
             JOptionPane.showMessageDialog(panel,
-                    "User added: " + name + " (" + cpf + ")");
+                    "Membro adicionado: " + name + " (" + cpf + ")");
         });
     }
 

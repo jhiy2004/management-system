@@ -16,7 +16,7 @@ public class AddDepartmentForm {
 
             controller.createDepartment(name);
             JOptionPane.showMessageDialog(panel,
-                    "Department added: " + name);
+                    "Departamento adicionado: " + name);
         });
     }
 

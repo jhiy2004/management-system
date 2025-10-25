@@ -1,5 +1,6 @@
 package view;
 
+import controller.DepartmentController;
 import controller.UserController;
 import model.Department;
 import model.LoginUser;
@@ -19,7 +20,7 @@ public class LoginForm {
     private JLabel passwordLabel;
     private JPanel panel;
 
-    public LoginForm(UserController controller) {
+    public LoginForm(JFrame frame, UserController userController, DepartmentController departmentController) {
         loginButton.addActionListener(e -> {
             String cpf = cpfField.getText().trim();
             String password = passwordField.getText().trim();
@@ -34,12 +35,16 @@ public class LoginForm {
             }
 
             // Call controller
-            LoginUser user = controller.login(cpf, password);
+            LoginUser user = userController.login(cpf, password);
 
             if (user != null) {
                 JOptionPane.showMessageDialog(panel,
                         "Login realizado com sucesso: " + user.getName());
                 Session.setCurrentUser(user);
+
+                UserPanelForm userPanelForm = new UserPanelForm(userController, departmentController);
+                frame.setContentPane(userPanelForm.getPanel());
+                frame.revalidate();
             } else {
                 JOptionPane.showMessageDialog(panel,
                         "Falha no login",

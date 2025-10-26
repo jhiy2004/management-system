@@ -16,6 +16,7 @@ public class UserPanelForm {
     private JButton verMembrosButton;
     private JLabel welcomeLabel;
     private JPanel panel;
+    private JButton adicionarDepartamentoButton;
 
     public UserPanelForm(UserController userController, DepartmentController departmentController) {
         LoginUser user = Session.getCurrentUser();
@@ -41,6 +42,15 @@ public class UserPanelForm {
             JFrame frame = new JFrame("Adicionar Membro");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.setContentPane(new addUserForm(userController).getPanel());
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+
+        adicionarDepartamentoButton.addActionListener(e -> {
+            JFrame frame = new JFrame("Adicionar Departamento");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setContentPane(new AddDepartmentForm(departmentController).getPanel());
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);

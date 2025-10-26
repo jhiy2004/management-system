@@ -1,6 +1,8 @@
 package model;
 
-public class Department {
+import java.io.Serializable;
+
+public class Department implements Serializable {
     private String name;
 
     public Department(String name) {

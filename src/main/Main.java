@@ -18,50 +18,23 @@ public class Main {
         UserController userController = new UserController();
         DepartmentController departmentController = new DepartmentController();
 
-        Catalog catalog = Catalog.getInstance();
-
-
-        // Simple test code
-        departmentController.createDepartment("Marketing");
-        departmentController.createDepartment("Math");
-
-        Department dpt1 = catalog.getDepartmentByName("Marketing");
-
-        userController.addAdmin("63965689002", "jose", "123", LocalDate.parse("2004-04-17"), "abcd1234", dpt1);
-        userController.addOwner("47868853808", "joao", "123", LocalDate.parse("2004-04-17"), "abcd1234");
-
-        Admin myAdmin = catalog.getAdminByCpf("63965689002");
-        Owner myOwner = catalog.getOwnerByCpf("47868853808");
-
-        Department dpt = catalog.getDepartmentByName("Marketing");
-        Session.setCurrentUser(myOwner);
-        // End simple test
-
         boolean firstLogin = false;
 
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Management System");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-            /*
-            UpdateOwnerForm form = new UpdateOwnerForm(myOwner, userController);
-            frame.setContentPane(form.getPanel());
-             */
+            frame.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.out.println("Salvando dados...");
+                    userController.saveUsers();
+                    departmentController.saveUsers();
 
-            /*
-            firstLoginForm form = new firstLoginForm(userController);
-            frame.setContentPane(form.getPanel());
-             */
-
-            /*
-            EditDepartmentForm form = new EditDepartmentForm(dpt, departmentController, Session.getCurrentUser());
-            frame.setContentPane(form.getPanel());
-             */
-
-            /*
-            UpdateAdminForm form = new UpdateAdminForm(myAdmin, userController, departmentController);
-            frame.setContentPane(form.getPanel());
-            */
+                    frame.dispose();
+                    System.exit(0);
+                }
+            });
 
             if (!firstLogin) {
                 LoginForm form = new LoginForm(frame, userController, departmentController);

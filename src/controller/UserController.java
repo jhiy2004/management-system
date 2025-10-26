@@ -7,6 +7,11 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 public class UserController {
+    public void saveUsers() {
+        Catalog catalog = Catalog.getInstance();
+        catalog.saveUsers();
+    }
+
     public LoginUser login(String cpf, String password) {
         if (!validateCpf(cpf)) {
             return null;

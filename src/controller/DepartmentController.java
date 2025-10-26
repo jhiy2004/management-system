@@ -8,6 +8,11 @@ import model.User;
 import java.util.Collection;
 
 public class DepartmentController {
+    public void saveUsers() {
+        Catalog catalog = Catalog.getInstance();
+        catalog.saveDepartments();
+    }
+
     public Collection<Department> getDepartments() {
         Catalog catalog = Catalog.getInstance();
 

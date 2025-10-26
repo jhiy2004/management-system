@@ -17,6 +17,22 @@ public class Catalog {
     private final Map<String, Manager> managers;
     private final Map<String, Department> departments;
 
+    private <K, V extends java.io.Serializable> Map<K, V> loadOrEmpty(String filename) {
+        Map<K, V> loaded = DataStorage.loadMap(filename);
+        return loaded != null ? loaded : new HashMap<>();
+    }
+
+    public void saveUsers() {
+        DataStorage.saveMap(admins, "admins.ser");
+        DataStorage.saveMap(members, "members.ser");
+        DataStorage.saveMap(owners, "owners.ser");
+        DataStorage.saveMap(managers, "managers.ser");
+    }
+
+    public void saveDepartments() {
+        DataStorage.saveMap(departments, "departments.ser");
+    }
+
     public static Catalog getInstance() {
         if (instance == null) {
             instance = new Catalog();
@@ -25,12 +41,11 @@ public class Catalog {
     }
 
     private Catalog() {
-        this.admins = new HashMap<>();
-        this.members = new HashMap<>();
-        this.owners = new HashMap<>();
-        this.managers = new HashMap<>();
-
-        this.departments = new HashMap<>();
+        this.admins = loadOrEmpty("admins.ser");
+        this.members = loadOrEmpty("members.ser");
+        this.owners = loadOrEmpty("owners.ser");
+        this.managers = loadOrEmpty("managers.ser");
+        this.departments = loadOrEmpty("departments.ser");
     }
 
     public Collection<Admin> getAdmins() {

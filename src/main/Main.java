@@ -3,6 +3,7 @@ package main;
 import javax.swing.*;
 
 import catalog.Catalog;
+import controller.ActionController;
 import controller.DepartmentController;
 import controller.UserController;
 import model.Admin;
@@ -17,6 +18,7 @@ public class Main {
     public static void main(String args[]) {
         UserController userController = new UserController();
         DepartmentController departmentController = new DepartmentController();
+        ActionController actionController = new ActionController();
 
         boolean firstLogin = false;
 
@@ -30,6 +32,7 @@ public class Main {
                     System.out.println("Salvando dados...");
                     userController.saveUsers();
                     departmentController.saveUsers();
+                    actionController.saveActions();
 
                     frame.dispose();
                     System.exit(0);
@@ -37,7 +40,7 @@ public class Main {
             });
 
             if (!firstLogin) {
-                LoginForm form = new LoginForm(frame, userController, departmentController);
+                LoginForm form = new LoginForm(frame, userController, departmentController, actionController);
                 frame.setContentPane(form.getPanel());
             }else {
                 firstLoginForm form = new firstLoginForm(userController);

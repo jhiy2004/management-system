@@ -16,6 +16,7 @@ public class Catalog {
     private final Map<String, Owner> owners;
     private final Map<String, Manager> managers;
     private final Map<String, Department> departments;
+    private final Map<String, Action> actions;
 
     private <K, V extends java.io.Serializable> Map<K, V> loadOrEmpty(String filename) {
         Map<K, V> loaded = DataStorage.loadMap(filename);
@@ -33,6 +34,10 @@ public class Catalog {
         DataStorage.saveMap(departments, "departments.ser");
     }
 
+    public void saveActions() {
+        DataStorage.saveMap(actions, "actions.ser");
+    }
+
     public static Catalog getInstance() {
         if (instance == null) {
             instance = new Catalog();
@@ -46,6 +51,7 @@ public class Catalog {
         this.owners = loadOrEmpty("owners.ser");
         this.managers = loadOrEmpty("managers.ser");
         this.departments = loadOrEmpty("departments.ser");
+        this.actions = loadOrEmpty("actions.ser");
     }
 
     public Collection<Admin> getAdmins() {
@@ -66,6 +72,10 @@ public class Catalog {
 
     public Collection<Department> getDepartments() {
         return departments.values();
+    }
+
+    public Collection<Action> getActions() {
+        return actions.values();
     }
 
     public User getUserByCpf(String cpf) {
@@ -146,5 +156,11 @@ public class Catalog {
 
     public void addCompany(Company company) {
         this.company = company;
+    }
+
+    public void insertAction(String name, String description, int points) {
+        Action newAction = new Action(name, description, points);
+
+        this.actions.put(name, newAction);
     }
 }

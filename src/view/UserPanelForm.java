@@ -1,5 +1,6 @@
 package view;
 
+import controller.ActionController;
 import controller.DepartmentController;
 import controller.UserController;
 import model.Admin;
@@ -17,8 +18,9 @@ public class UserPanelForm {
     private JLabel welcomeLabel;
     private JPanel panel;
     private JButton adicionarDepartamentoButton;
+    private JButton adicionarAcaoButton;
 
-    public UserPanelForm(UserController userController, DepartmentController departmentController) {
+    public UserPanelForm(UserController userController, DepartmentController departmentController, ActionController actionController) {
         LoginUser user = Session.getCurrentUser();
 
         welcomeLabel.setText("Olá, " + user.getName());
@@ -51,6 +53,15 @@ public class UserPanelForm {
             JFrame frame = new JFrame("Adicionar Departamento");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.setContentPane(new AddDepartmentForm(departmentController).getPanel());
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+
+        adicionarAcaoButton.addActionListener(e -> {
+            JFrame frame = new JFrame("Adicionar Ação");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setContentPane(new AddActionForm(actionController).getPanel());
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);

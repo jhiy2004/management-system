@@ -131,7 +131,9 @@ public class Catalog {
     }
 
     public boolean departmentNameExists(String name) {
-        return this.departments.containsKey(name);
+        if (name == null) return false;
+        return departments.keySet().stream()
+                .anyMatch(k -> k.equalsIgnoreCase(name.trim()));
     }
 
     public void insertDepartment(String name) {

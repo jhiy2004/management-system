@@ -59,7 +59,7 @@ public class UserPanelForm {
         verDepartamentosButton.addActionListener(e -> {
             JFrame frame = new JFrame("Departamentos");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.setContentPane(new ViewAllDepartmentsForm(departmentController, user).getPanel());
+            frame.setContentPane(new ViewAllDepartmentsForm(departmentController).getPanel());
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
@@ -68,7 +68,7 @@ public class UserPanelForm {
         verMembrosButton.addActionListener(e -> {
             JFrame frame = new JFrame("Membros");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.setContentPane(new VIewAllMembersForm(userController).getPanel());
+            frame.setContentPane(new ViewAllMembersForm(userController).getPanel());
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);

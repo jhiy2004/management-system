@@ -2,6 +2,7 @@ package controller;
 
 import catalog.Catalog;
 import model.Department;
+import model.LoginUser;
 import model.Owner;
 import model.User;
 
@@ -35,14 +36,14 @@ public class DepartmentController {
         catalog.insertDepartment(name);
     }
 
-    public boolean removeDepartment(Department d, User user) {
+    public boolean removeDepartment(Department d, LoginUser user) {
         if (!getCredentialAccessLevel(user)) {
             return false;
         }
 
         Catalog catalog = Catalog.getInstance();
 
-        if (catalog.departmentNameExists(d.getName())) {
+        if (!catalog.departmentNameExists(d.getName())) {
             return false;
         }
 
@@ -50,7 +51,7 @@ public class DepartmentController {
         return true;
     }
 
-    public boolean editDepartment(Department d, String name, User user) {
+    public boolean editDepartment(Department d, String name, LoginUser user) {
         if (!getCredentialAccessLevel(user)) {
             return false;
         }
@@ -70,11 +71,11 @@ public class DepartmentController {
         return true;
     }
 
-    private boolean getCredentialAccessLevel(User user) {
+    private boolean getCredentialAccessLevel(LoginUser user) {
         return validOwner(user);
     }
 
-    private boolean validOwner(User user) {
+    private boolean validOwner(LoginUser user) {
         return (user instanceof Owner);
     }
 

@@ -135,22 +135,23 @@ public class UserController {
         catalog.insertAdmin(cpf, name, numberOfTuition, birthdate, password, department);
     }
 
-    public void removeMember(String cpf, User user) {
+    public boolean removeMember(String cpf, LoginUser user) {
         Catalog catalog = Catalog.getInstance();
 
         if (!isAdmin(user)) {
-            return;
+            return false;
         }
 
         if (!validateCpf(cpf)) {
-            return;
+            return false;
         }
 
         if (!catalog.cpfExists(cpf)) {
-            return;
+            return false;
         }
 
         catalog.removeMember(cpf);
+        return true;
     }
 
     private boolean validateCompanyInformation(Company company) {
@@ -158,7 +159,7 @@ public class UserController {
     }
 
     // Potentially unnecessary — consider refactoring or deleting
-    private boolean isAdmin(User user) {
+    private boolean isAdmin(LoginUser user) {
         return (user instanceof Admin);
     }
 

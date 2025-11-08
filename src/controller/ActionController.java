@@ -1,11 +1,20 @@
 package controller;
 
 import catalog.Catalog;
+import model.Action;
+
+import java.util.Collection;
 
 public class ActionController {
     public void saveActions() {
         Catalog catalog = Catalog.getInstance();
         catalog.saveActions();
+    }
+
+    public Collection<Action> getActions() {
+        Catalog catalog = Catalog.getInstance();
+
+        return catalog.getActions();
     }
 
     public boolean createAction(String name, String description, int points) {

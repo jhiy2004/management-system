@@ -3,10 +3,7 @@ package catalog;
 import model.*;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Catalog {
     private static Catalog instance = null;
@@ -17,11 +14,18 @@ public class Catalog {
     private final Map<String, Manager> managers;
     private final Map<String, Department> departments;
     private final Map<String, Action> actions;
+    private final List<Review> reviews;
 
     private <K, V extends java.io.Serializable> Map<K, V> loadOrEmpty(String filename) {
         Map<K, V> loaded = DataStorage.loadMap(filename);
         return loaded != null ? loaded : new HashMap<>();
     }
+
+    private <T extends java.io.Serializable> List<T> loadOrEmptyList(String filename) {
+        List<T> loaded = DataStorage.loadList(filename); // supondo que exista esse método
+        return loaded != null ? loaded : new ArrayList<>();
+    }
+
 
     public void saveUsers() {
         DataStorage.saveMap(admins, "admins.ser");
@@ -38,6 +42,8 @@ public class Catalog {
         DataStorage.saveMap(actions, "actions.ser");
     }
 
+    public void saveReviews() { DataStorage.saveList(reviews, "reviews.ser"); }
+
     public static Catalog getInstance() {
         if (instance == null) {
             instance = new Catalog();
@@ -52,6 +58,7 @@ public class Catalog {
         this.managers = loadOrEmpty("managers.ser");
         this.departments = loadOrEmpty("departments.ser");
         this.actions = loadOrEmpty("actions.ser");
+        this.reviews = loadOrEmptyList("reviews.ser");
     }
 
     public Collection<Admin> getAdmins() {
@@ -77,6 +84,8 @@ public class Catalog {
     public Collection<Action> getActions() {
         return actions.values();
     }
+
+    public Collection<Review> getReviews() { return reviews; }
 
     public User getUserByCpf(String cpf) {
         if (this.members.containsKey(cpf)) {
@@ -164,5 +173,11 @@ public class Catalog {
         Action newAction = new Action(name, description, points);
 
         this.actions.put(name, newAction);
+    }
+
+    public void insertReview(LoginUser reviewer, Member reviewedMember, String optionalContext, List<Action> actions) {
+        Review review = new Review(reviewer, reviewedMember, optionalContext, actions);
+
+        this.reviews.add(review);
     }
 }

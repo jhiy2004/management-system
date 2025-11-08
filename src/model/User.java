@@ -47,4 +47,9 @@ public class User implements Serializable {
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
+
+    @Override
+    public String toString() {
+        return name + " - " + cpf;
+    }
 }

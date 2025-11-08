@@ -36,4 +36,10 @@ public class Action implements Serializable {
     public void setPoints(int points) {
         this.points = points;
     }
+
+    @Override
+    public String toString() {
+        return name + " (" + points + " pts)";
+    }
+
 }

@@ -2,6 +2,7 @@ package view;
 
 import controller.ActionController;
 import controller.DepartmentController;
+import controller.ReviewController;
 import controller.UserController;
 import model.Admin;
 import model.LoginUser;
@@ -19,8 +20,11 @@ public class UserPanelForm {
     private JPanel panel;
     private JButton adicionarDepartamentoButton;
     private JButton adicionarAcaoButton;
+    private JButton adicionarReviewButton;
+    private JButton verAcoesButton;
+    private JButton verReviewsButton;
 
-    public UserPanelForm(UserController userController, DepartmentController departmentController, ActionController actionController) {
+    public UserPanelForm(UserController userController, DepartmentController departmentController, ActionController actionController, ReviewController reviewController) {
         LoginUser user = Session.getCurrentUser();
 
         welcomeLabel.setText("Olá, " + user.getName());
@@ -80,6 +84,33 @@ public class UserPanelForm {
             JFrame frame = new JFrame("Membros");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.setContentPane(new ViewAllMembersForm(userController).getPanel());
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+
+        adicionarReviewButton.addActionListener(e -> {
+            JFrame frame = new JFrame("Adicionar Review");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setContentPane(new RegisterReviewForm(userController, actionController, reviewController).getPanel());
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+
+        verAcoesButton.addActionListener(e -> {
+            JFrame frame = new JFrame("Ver Ações");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setContentPane(new ViewAllActions(actionController).getPanel());
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+
+        verReviewsButton.addActionListener(e -> {
+            JFrame frame = new JFrame("Ver Reviews");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setContentPane(new ViewAllReviews(reviewController).getPanel());
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);

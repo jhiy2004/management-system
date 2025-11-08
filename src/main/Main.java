@@ -2,14 +2,11 @@ package main;
 
 import javax.swing.*;
 
-import catalog.Catalog;
 import controller.ActionController;
 import controller.DepartmentController;
+import controller.ReviewController;
 import controller.UserController;
-import model.Admin;
-import model.Department;
-import model.Owner;
-import model.Session;
+import model.*;
 import view.*;
 
 import java.time.LocalDate;
@@ -19,6 +16,9 @@ public class Main {
         UserController userController = new UserController();
         DepartmentController departmentController = new DepartmentController();
         ActionController actionController = new ActionController();
+        ReviewController reviewController = new ReviewController();
+
+        //userController.addAdmin("47868853808", "joao", "123", LocalDate.parse("2004-04-17"), "abcd1234", departmentController.getDepartments().iterator().next());
 
         boolean firstLogin = false;
 
@@ -33,6 +33,7 @@ public class Main {
                     userController.saveUsers();
                     departmentController.saveUsers();
                     actionController.saveActions();
+                    reviewController.saveReviews();
 
                     frame.dispose();
                     System.exit(0);
@@ -40,7 +41,7 @@ public class Main {
             });
 
             if (!firstLogin) {
-                LoginForm form = new LoginForm(frame, userController, departmentController, actionController);
+                LoginForm form = new LoginForm(frame, userController, departmentController, actionController, reviewController);
                 frame.setContentPane(form.getPanel());
             }else {
                 firstLoginForm form = new firstLoginForm(userController);

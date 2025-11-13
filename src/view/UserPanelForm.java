@@ -4,12 +4,11 @@ import controller.ActionController;
 import controller.DepartmentController;
 import controller.ReviewController;
 import controller.UserController;
-import model.Admin;
-import model.LoginUser;
-import model.Owner;
-import model.Session;
+import model.*;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.Collection;
 
 public class UserPanelForm {
     private JButton editarPerfilButton;
@@ -23,6 +22,7 @@ public class UserPanelForm {
     private JButton adicionarReviewButton;
     private JButton verAcoesButton;
     private JButton verReviewsButton;
+    private JButton verDesempenhoDeMembroButton;
 
     public UserPanelForm(UserController userController, DepartmentController departmentController, ActionController actionController, ReviewController reviewController) {
         LoginUser user = Session.getCurrentUser();
@@ -110,11 +110,50 @@ public class UserPanelForm {
         verReviewsButton.addActionListener(e -> {
             JFrame frame = new JFrame("Ver Reviews");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.setContentPane(new ViewAllReviews(reviewController).getPanel());
+            frame.setContentPane(new ViewAllReviewsForm(reviewController).getPanel());
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
+
+        verDesempenhoDeMembroButton.addActionListener(e -> {
+            Collection<Member> members = userController.getMembers();
+
+            JDialog dialog = new JDialog((JFrame) SwingUtilities.getWindowAncestor(verDesempenhoDeMembroButton),
+                    "Selecionar Membro", true);
+            dialog.setLayout(new BorderLayout(10, 10));
+
+            JComboBox<Member> comboBox = new JComboBox<>(members.toArray(new Member[0]));
+
+            JButton confirmarButton = new JButton("Ver Desempenho");
+
+            confirmarButton.addActionListener(ev -> {
+                Member selected = (Member) comboBox.getSelectedItem();
+                if (selected != null) {
+                    dialog.dispose(); // Fecha o dialog
+
+                    JFrame frame = new JFrame("Ver desempenho do membro");
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.setContentPane(new ViewMemberReviewsForm(selected, reviewController).getPanel());
+                    frame.pack();
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
+                }
+            });
+
+            // Layout do dialog
+            JPanel centerPanel = new JPanel(new FlowLayout());
+            centerPanel.add(new JLabel("Selecione um membro:"));
+            centerPanel.add(comboBox);
+
+            dialog.add(centerPanel, BorderLayout.CENTER);
+            dialog.add(confirmarButton, BorderLayout.SOUTH);
+
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        });
+
     }
 
     public JPanel getPanel() {

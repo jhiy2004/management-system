@@ -1,18 +1,17 @@
 package view;
 
 import controller.ReviewController;
-import model.Action;
 import model.Review;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
 
-public class ViewAllReviews {
+public class ViewAllReviewsForm {
     private JPanel panel;
     private ReviewController reviewController;
 
-    public ViewAllReviews(ReviewController reviewController) {
+    public ViewAllReviewsForm(ReviewController reviewController) {
         this.reviewController = reviewController;
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

@@ -7,6 +7,11 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 public class UserController {
+    public void saveCompany() {
+        Catalog catalog = Catalog.getInstance();
+        catalog.saveCompany();
+    }
+
     public void saveUsers() {
         Catalog catalog = Catalog.getInstance();
         catalog.saveUsers();
@@ -41,6 +46,18 @@ public class UserController {
         Catalog catalog = Catalog.getInstance();
 
         return catalog.getMembers();
+    }
+
+    public Collection<Admin> getAdmins() {
+        Catalog catalog = Catalog.getInstance();
+
+        return catalog.getAdmins();
+    }
+
+    public Company getCompany() {
+        Catalog catalog = Catalog.getInstance();
+
+        return catalog.getCompany();
     }
 
     public boolean createCompany(String name, String cnpj, String email, LocalDate date) {
@@ -105,14 +122,14 @@ public class UserController {
         return true;
     }
 
-    public void addMember(String cpf, String name, String numberOfTuition, LocalDate birthdate){
+    public void addMember(String cpf, String name, String numberOfTuition, LocalDate birthdate, Department department){
         Catalog catalog = Catalog.getInstance();
 
         if (!validateCpf(cpf) || catalog.cpfExists(cpf)) {
             return;
         }
 
-        catalog.insertMember(cpf, name, numberOfTuition, birthdate);
+        catalog.insertMember(cpf, name, numberOfTuition, birthdate, department);
     }
 
     public void addOwner(String cpf, String name, String numberOfTuition, LocalDate birthdate, String password) {

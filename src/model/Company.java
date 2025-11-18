@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Company {
+public class Company implements Serializable {
     private String name;
     private String cnpj;
     private String email;

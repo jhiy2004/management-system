@@ -2,6 +2,7 @@ package catalog;
 
 import model.*;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -26,12 +27,18 @@ public class Catalog {
         return loaded != null ? loaded : new ArrayList<>();
     }
 
+    private Company loadOrEmptyCompany(String filename) {
+        Company loaded = DataStorage.loadCompany("company.ser");
+        return loaded;
+    }
+
 
     public void saveUsers() {
         DataStorage.saveMap(admins, "admins.ser");
         DataStorage.saveMap(members, "members.ser");
         DataStorage.saveMap(owners, "owners.ser");
         DataStorage.saveMap(managers, "managers.ser");
+        DataStorage.saveCompany(company, "company.ser");
     }
 
     public void saveDepartments() {
@@ -43,6 +50,8 @@ public class Catalog {
     }
 
     public void saveReviews() { DataStorage.saveList(reviews, "reviews.ser"); }
+
+    public void saveCompany() { DataStorage.saveCompany(company, "company.ser"); }
 
     public static Catalog getInstance() {
         if (instance == null) {
@@ -59,7 +68,10 @@ public class Catalog {
         this.departments = loadOrEmpty("departments.ser");
         this.actions = loadOrEmpty("actions.ser");
         this.reviews = loadOrEmptyList("reviews.ser");
+        this.company = loadOrEmptyCompany("company.ser");
     }
+
+    public Company getCompany() { return company; }
 
     public Collection<Admin> getAdmins() {
         return admins.values();
@@ -127,8 +139,8 @@ public class Catalog {
                 this.managers.containsKey(cpf);
     }
 
-    public void insertMember(String cpf, String name, String numberOfTuition, LocalDate birthdate) {
-        Member newMember = new Member(cpf, name, numberOfTuition, birthdate);
+    public void insertMember(String cpf, String name, String numberOfTuition, LocalDate birthdate, Department department) {
+        Member newMember = new Member(cpf, name, numberOfTuition, birthdate, department);
 
         this.members.put(cpf, newMember);
     }

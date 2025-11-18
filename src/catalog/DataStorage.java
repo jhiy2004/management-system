@@ -1,5 +1,7 @@
 package catalog;
 
+import model.Company;
+
 import java.io.*;
 import java.util.List;
 import java.util.Map;
@@ -49,4 +51,25 @@ public class DataStorage {
             return null;
         }
     }
+
+    public static Company loadCompany(String filename) {
+        File file = new File(filename);
+        if (!file.exists()) return null;
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            return (Company) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void saveCompany(Company company, String filename) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(company);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

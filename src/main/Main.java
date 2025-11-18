@@ -6,10 +6,7 @@ import controller.ActionController;
 import controller.DepartmentController;
 import controller.ReviewController;
 import controller.UserController;
-import model.*;
 import view.*;
-
-import java.time.LocalDate;
 
 public class Main {
     public static void main(String args[]) {
@@ -18,9 +15,7 @@ public class Main {
         ActionController actionController = new ActionController();
         ReviewController reviewController = new ReviewController();
 
-        //userController.addAdmin("47868853808", "joao", "123", LocalDate.parse("2004-04-17"), "abcd1234", departmentController.getDepartments().iterator().next());
-
-        boolean firstLogin = false;
+        boolean firstLogin = userController.getCompany() == null;
 
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Management System");
@@ -30,6 +25,7 @@ public class Main {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.out.println("Salvando dados...");
+                    userController.saveCompany();
                     userController.saveUsers();
                     departmentController.saveUsers();
                     actionController.saveActions();
@@ -44,7 +40,7 @@ public class Main {
                 LoginForm form = new LoginForm(frame, userController, departmentController, actionController, reviewController);
                 frame.setContentPane(form.getPanel());
             }else {
-                firstLoginForm form = new firstLoginForm(userController);
+                FirstLoginForm form = new FirstLoginForm(frame, userController, departmentController, actionController, reviewController);
                 frame.setContentPane(form.getPanel());
             }
 

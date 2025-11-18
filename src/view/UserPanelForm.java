@@ -47,7 +47,7 @@ public class UserPanelForm {
             // cria a janela
             JFrame frame = new JFrame("Adicionar Membro");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.setContentPane(new addUserForm(userController).getPanel());
+            frame.setContentPane(new AddUserForm(userController, departmentController).getPanel());
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);

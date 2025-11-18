@@ -23,6 +23,7 @@ public class UserPanelForm {
     private JButton verAcoesButton;
     private JButton verReviewsButton;
     private JButton verDesempenhoDeMembroButton;
+    private JButton verDesempenhoDeDepartamentoButton;
 
     public UserPanelForm(UserController userController, DepartmentController departmentController, ActionController actionController, ReviewController reviewController) {
         LoginUser user = Session.getCurrentUser();
@@ -154,6 +155,43 @@ public class UserPanelForm {
             dialog.setVisible(true);
         });
 
+        verDesempenhoDeDepartamentoButton.addActionListener(e -> {
+            Collection<Department> departments = departmentController.getDepartments();
+
+            JDialog dialog = new JDialog((JFrame) SwingUtilities.getWindowAncestor(verDesempenhoDeDepartamentoButton),
+                    "Selecionar Departamento", true);
+            dialog.setLayout(new BorderLayout(10, 10));
+
+            JComboBox<Department> comboBox = new JComboBox<>(departments.toArray(new Department[0]));
+
+            JButton confirmarButton = new JButton("Ver Desempenho");
+
+            confirmarButton.addActionListener(ev -> {
+                Department selected = (Department) comboBox.getSelectedItem();
+                if (selected != null) {
+                    dialog.dispose(); // Fecha o dialog
+
+                    JFrame frame = new JFrame("Ver desempenho do departamento");
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.setContentPane(new ViewDepartmentReviewsForm(selected, userController, reviewController).getPanel());
+                    frame.pack();
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
+                }
+            });
+
+            // Layout do dialog
+            JPanel centerPanel = new JPanel(new FlowLayout());
+            centerPanel.add(new JLabel("Selecione um departamento:"));
+            centerPanel.add(comboBox);
+
+            dialog.add(centerPanel, BorderLayout.CENTER);
+            dialog.add(confirmarButton, BorderLayout.SOUTH);
+
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        });
     }
 
     public JPanel getPanel() {

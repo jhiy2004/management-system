@@ -25,6 +25,27 @@ public class ReviewController {
         return memberReviews;
     }
 
+    public Collection<Review> getMembersReviews(Collection<Member> members, LoginUser user) {
+        if (!validateAccessLevel(user)) return null;
+
+        Catalog catalog = Catalog.getInstance();
+        Collection<Review> allReviews = catalog.getReviews();
+        Collection<Review> memberReviews = new ArrayList<>();
+
+        for (Review review : allReviews) {
+            for (Member member : members) {
+                if (review.getReviewedMember().getCpf().equals(member.getCpf())) {
+                    memberReviews.add(review);
+                    break;
+                }
+            }
+        }
+
+        return memberReviews;
+    }
+
+
+
     public Collection<Review> getReviews() {
         Catalog catalog = Catalog.getInstance();
         return catalog.getReviews();

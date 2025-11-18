@@ -4,6 +4,7 @@ import catalog.Catalog;
 import model.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserController {
@@ -46,6 +47,23 @@ public class UserController {
         Catalog catalog = Catalog.getInstance();
 
         return catalog.getMembers();
+    }
+
+    public Collection<Member> getMembersDepartment(Department department) {
+        Catalog catalog = Catalog.getInstance();
+
+        Collection<Member> allMembers = catalog.getMembers();
+        Collection<Member> result = new ArrayList<>();
+
+        for (Member m : allMembers) {
+            if (m.getDepartment() != null &&
+                    m.getDepartment().getName().equals(department.getName())) {
+
+                result.add(m);
+            }
+        }
+
+        return result;
     }
 
     public Collection<Admin> getAdmins() {

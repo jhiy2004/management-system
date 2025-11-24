@@ -187,8 +187,8 @@ public class Catalog {
         this.actions.put(name, newAction);
     }
 
-    public void insertReview(LoginUser reviewer, Member reviewedMember, String optionalContext, List<Action> actions) {
-        Review review = new Review(reviewer, reviewedMember, optionalContext, actions);
+    public void insertReview(LoginUser reviewer, Member reviewedMember, String optionalContext, List<Action> actions, LocalDate date) {
+        Review review = new Review(reviewer, reviewedMember, optionalContext, actions, date);
 
         this.reviews.add(review);
     }

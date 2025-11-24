@@ -8,6 +8,9 @@ import model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Collection;
 
 public class UserPanelForm {
@@ -109,12 +112,73 @@ public class UserPanelForm {
         });
 
         verReviewsButton.addActionListener(e -> {
-            JFrame frame = new JFrame("Ver Reviews");
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.setContentPane(new ViewAllReviewsForm(reviewController).getPanel());
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
+            JDialog dialog = new JDialog((JFrame) SwingUtilities.getWindowAncestor(verReviewsButton),
+                    "Ver Reviews", true);
+            dialog.setLayout(new BorderLayout(10, 10));
+
+            JTextField dataInicioField = new JTextField(10);
+            JTextField dataFimField = new JTextField(10);
+
+            dataInicioField.setToolTipText("Formato: dd/mm/aaaa");
+            dataFimField.setToolTipText("Formato: dd/mm/aaaa");
+
+            JButton confirmarButton = new JButton("Ver Desempenho");
+
+            confirmarButton.addActionListener(ev -> {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                String dataInicioStr = dataInicioField.getText().trim();
+                String dataFimStr = dataFimField.getText().trim();
+
+                LocalDate dataInicio = null;
+                LocalDate dataFim = null;
+
+                try {
+                    dataInicio = LocalDate.parse(dataInicioStr, formatter);
+                } catch (DateTimeParseException ex) {
+                    JOptionPane.showMessageDialog(panel,
+                            "Data de início inválida! Use o formato dd/MM/yyyy.",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    dataFim = LocalDate.parse(dataFimStr, formatter);
+                } catch (DateTimeParseException ex) {
+                    JOptionPane.showMessageDialog(panel,
+                            "Data de fim inválida! Use o formato dd/MM/yyyy.",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                dialog.dispose(); // Fecha o dialog
+
+                JFrame frame = new JFrame("Ver Reviews");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setContentPane(new ViewAllReviewsForm(dataInicio, dataFim, reviewController).getPanel());
+                frame.pack();
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+            });
+
+            JPanel datePanel = new JPanel(new GridLayout(2, 2, 5, 5));
+            datePanel.add(new JLabel("Data Início:"));
+            datePanel.add(dataInicioField);
+            datePanel.add(new JLabel("Data Fim:"));
+            datePanel.add(dataFimField);
+
+            // Layout do dialog
+            JPanel centerPanel = new JPanel(new FlowLayout());
+            centerPanel.add(datePanel);
+
+            dialog.add(centerPanel, BorderLayout.CENTER);
+            dialog.add(confirmarButton, BorderLayout.SOUTH);
+
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
         });
 
         verDesempenhoDeMembroButton.addActionListener(e -> {
@@ -124,28 +188,73 @@ public class UserPanelForm {
                     "Selecionar Membro", true);
             dialog.setLayout(new BorderLayout(10, 10));
 
+            JTextField dataInicioField = new JTextField(10);
+            JTextField dataFimField = new JTextField(10);
+
+            dataInicioField.setToolTipText("Formato: dd/mm/aaaa");
+            dataFimField.setToolTipText("Formato: dd/mm/aaaa");
+
             JComboBox<Member> comboBox = new JComboBox<>(members.toArray(new Member[0]));
 
             JButton confirmarButton = new JButton("Ver Desempenho");
 
             confirmarButton.addActionListener(ev -> {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                String dataInicioStr = dataInicioField.getText().trim();
+                String dataFimStr = dataFimField.getText().trim();
+
+                LocalDate dataInicio = null;
+                LocalDate dataFim = null;
+
+                try {
+                    dataInicio = LocalDate.parse(dataInicioStr, formatter);
+                } catch (DateTimeParseException ex) {
+                    JOptionPane.showMessageDialog(panel,
+                            "Data de início inválida! Use o formato dd/MM/yyyy.",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    dataFim = LocalDate.parse(dataFimStr, formatter);
+                } catch (DateTimeParseException ex) {
+                    JOptionPane.showMessageDialog(panel,
+                            "Data de fim inválida! Use o formato dd/MM/yyyy.",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 Member selected = (Member) comboBox.getSelectedItem();
                 if (selected != null) {
                     dialog.dispose(); // Fecha o dialog
 
                     JFrame frame = new JFrame("Ver desempenho do membro");
                     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.setContentPane(new ViewMemberReviewsForm(selected, reviewController).getPanel());
+                    frame.setContentPane(new ViewMemberReviewsForm(selected, dataInicio, dataFim, reviewController).getPanel());
                     frame.pack();
                     frame.setLocationRelativeTo(null);
                     frame.setVisible(true);
                 }
             });
 
+            JPanel datePanel = new JPanel(new GridLayout(2, 2, 5, 5));
+            datePanel.add(new JLabel("Data Início:"));
+            datePanel.add(dataInicioField);
+            datePanel.add(new JLabel("Data Fim:"));
+            datePanel.add(dataFimField);
+
             // Layout do dialog
-            JPanel centerPanel = new JPanel(new FlowLayout());
-            centerPanel.add(new JLabel("Selecione um membro:"));
-            centerPanel.add(comboBox);
+            JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
+
+            JPanel comboPanel = new JPanel(new FlowLayout());
+            comboPanel.add(new JLabel("Selecione um membro:"));
+            comboPanel.add(comboBox);
+
+            centerPanel.add(comboPanel, BorderLayout.NORTH);
+            centerPanel.add(datePanel, BorderLayout.CENTER);
 
             dialog.add(centerPanel, BorderLayout.CENTER);
             dialog.add(confirmarButton, BorderLayout.SOUTH);
@@ -162,28 +271,75 @@ public class UserPanelForm {
                     "Selecionar Departamento", true);
             dialog.setLayout(new BorderLayout(10, 10));
 
+            JTextField dataInicioField = new JTextField(10);
+            JTextField dataFimField = new JTextField(10);
+
+            dataInicioField.setToolTipText("Formato: dd/mm/aaaa");
+            dataFimField.setToolTipText("Formato: dd/mm/aaaa");
+
+
             JComboBox<Department> comboBox = new JComboBox<>(departments.toArray(new Department[0]));
 
             JButton confirmarButton = new JButton("Ver Desempenho");
 
             confirmarButton.addActionListener(ev -> {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                String dataInicioStr = dataInicioField.getText().trim();
+                String dataFimStr = dataFimField.getText().trim();
+
+                LocalDate dataInicio = null;
+                LocalDate dataFim = null;
+
+                try {
+                    dataInicio = LocalDate.parse(dataInicioStr, formatter);
+                } catch (DateTimeParseException ex) {
+                    JOptionPane.showMessageDialog(panel,
+                            "Data de início inválida! Use o formato dd/MM/yyyy.",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    dataFim = LocalDate.parse(dataFimStr, formatter);
+                } catch (DateTimeParseException ex) {
+                    JOptionPane.showMessageDialog(panel,
+                            "Data de fim inválida! Use o formato dd/MM/yyyy.",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 Department selected = (Department) comboBox.getSelectedItem();
                 if (selected != null) {
                     dialog.dispose(); // Fecha o dialog
 
                     JFrame frame = new JFrame("Ver desempenho do departamento");
                     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.setContentPane(new ViewDepartmentReviewsForm(selected, userController, reviewController).getPanel());
+                    frame.setContentPane(new ViewDepartmentReviewsForm(selected, dataInicio, dataFim, userController, reviewController).getPanel());
                     frame.pack();
                     frame.setLocationRelativeTo(null);
                     frame.setVisible(true);
                 }
             });
 
+            JPanel datePanel = new JPanel(new GridLayout(2, 2, 5, 5));
+            datePanel.add(new JLabel("Data Início:"));
+            datePanel.add(dataInicioField);
+            datePanel.add(new JLabel("Data Fim:"));
+            datePanel.add(dataFimField);
+
             // Layout do dialog
-            JPanel centerPanel = new JPanel(new FlowLayout());
-            centerPanel.add(new JLabel("Selecione um departamento:"));
-            centerPanel.add(comboBox);
+            JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
+
+            JPanel comboPanel = new JPanel(new FlowLayout());
+            comboPanel.add(new JLabel("Selecione um departamento:"));
+            comboPanel.add(comboBox);
+
+            centerPanel.add(comboPanel, BorderLayout.NORTH);
+            centerPanel.add(datePanel, BorderLayout.CENTER);
+
 
             dialog.add(centerPanel, BorderLayout.CENTER);
             dialog.add(confirmarButton, BorderLayout.SOUTH);

@@ -9,6 +9,7 @@ import model.Session;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.Collection;
 
 public class ViewDepartmentReviewsForm {
@@ -16,9 +17,13 @@ public class ViewDepartmentReviewsForm {
     private Department department;
     private ReviewController reviewController;
     private UserController userController;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
 
-    public ViewDepartmentReviewsForm(Department department, UserController userController, ReviewController reviewController) {
+    public ViewDepartmentReviewsForm(Department department, LocalDate dataInicio, LocalDate dataFim, UserController userController, ReviewController reviewController) {
         this.department = department;
+        this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
         this.userController = userController;
         this.reviewController = reviewController;
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -31,7 +36,7 @@ public class ViewDepartmentReviewsForm {
         panel.removeAll();
 
         Collection<Member> members = userController.getMembersDepartment(department);
-        Collection<Review> reviews = reviewController.getMembersReviews(members, Session.getCurrentUser());
+        Collection<Review> reviews = reviewController.getMembersReviews(members, dataInicio, dataFim, Session.getCurrentUser());
 
         if (reviews.isEmpty()) {
             JLabel emptyLabel = new JLabel("Nenhuma review encontrada.");

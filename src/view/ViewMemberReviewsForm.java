@@ -7,15 +7,20 @@ import model.Session;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.Collection;
 
 public class ViewMemberReviewsForm {
     private JPanel panel;
     private Member member;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
     private ReviewController reviewController;
 
-    public ViewMemberReviewsForm(Member member, ReviewController reviewController) {
+    public ViewMemberReviewsForm(Member member, LocalDate dataInicio, LocalDate dataFim, ReviewController reviewController) {
         this.member = member;
+        this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
         this.reviewController = reviewController;
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -26,7 +31,7 @@ public class ViewMemberReviewsForm {
     private void refresh() {
         panel.removeAll();
 
-        Collection<Review> reviews = reviewController.getMemberReviews(member, Session.getCurrentUser());
+        Collection<Review> reviews = reviewController.getMemberReviews(member, dataInicio, dataFim, Session.getCurrentUser());
 
         if (reviews.isEmpty()) {
             JLabel emptyLabel = new JLabel("Nenhuma review encontrada.");

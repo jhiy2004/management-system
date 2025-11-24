@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +10,11 @@ public class Review implements Serializable {
     private Member reviewedMember;
     private String optionalContext;
     private List<Action> actions;
+    private LocalDate date;
 
-    public Review(LoginUser reviewer, Member reviewedMember, String optionalContext, List<Action> actions) {
+    public Review(LoginUser reviewer, Member reviewedMember, String optionalContext, List<Action> actions, LocalDate date) {
         this.reviewer = reviewer;
+        this.date = date;
         this.reviewedMember = reviewedMember;
         this.optionalContext = optionalContext;
         this.actions = new ArrayList<>();
@@ -53,4 +56,11 @@ public class Review implements Serializable {
     public int getNumActions () {
         return actions.size();
     }
+
+    public boolean inRange(LocalDate dataInicio, LocalDate dataFim) {
+        if (date == null || dataInicio == null || dataFim == null) return false;
+
+        return !date.isBefore(dataInicio) && !date.isAfter(dataFim);
+    }
+
 }

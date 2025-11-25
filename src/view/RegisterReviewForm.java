@@ -118,14 +118,21 @@ public class RegisterReviewForm {
                 return;
             }
 
-            reviewController.makeReview(
+            if(reviewController.makeReview(
                     reviewer,
                     member,
                     context,
                     selectedActions,
                     date
-            );
-            JOptionPane.showMessageDialog(panel, "Review cadastrada!");
+            )) {
+                JOptionPane.showMessageDialog(panel, "Review cadastrada!");
+            } else {
+                JOptionPane.showMessageDialog(panel,
+                        "Falha ao adicionar review, não possui nível de acesso qualificado",
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
         });
     }
 

@@ -56,8 +56,8 @@ public class FirstLoginForm {
             JOptionPane.showMessageDialog(panel,
                     "Companhia cadastrada: " + name + " (" + cnpj + ")");
 
-            AddDepartmentForm addDepartmentForm = new AddDepartmentForm(frame, userController, departmentController, actionController, reviewController);
-            frame.setContentPane(addDepartmentForm.getPanel());
+            AddOwnerForm addOwnerForm = new AddOwnerForm(frame, userController, departmentController, actionController, reviewController);
+            frame.setContentPane(addOwnerForm.getPanel());
             frame.revalidate();
         });
     }

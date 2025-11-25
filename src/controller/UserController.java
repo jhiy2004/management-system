@@ -140,34 +140,37 @@ public class UserController {
         return true;
     }
 
-    public void addMember(String cpf, String name, String numberOfTuition, LocalDate birthdate, Department department){
+    public boolean addMember(String cpf, String name, String numberOfTuition, LocalDate birthdate, Department department){
         Catalog catalog = Catalog.getInstance();
 
         if (!validateCpf(cpf) || catalog.cpfExists(cpf)) {
-            return;
+            return false;
         }
 
         catalog.insertMember(cpf, name, numberOfTuition, birthdate, department);
+        return true;
     }
 
-    public void addOwner(String cpf, String name, String numberOfTuition, LocalDate birthdate, String password) {
+    public boolean addOwner(String cpf, String name, String numberOfTuition, LocalDate birthdate, String password) {
         Catalog catalog = Catalog.getInstance();
 
         if(!validateCpf(cpf) || catalog.cpfExists(cpf)) {
-            return;
+            return false;
         }
 
         catalog.insertOwner(cpf, name, numberOfTuition, birthdate, password);
+        return true;
     }
 
-    public void addAdmin(String cpf, String name, String numberOfTuition, LocalDate birthdate, String password, Department department) {
+    public boolean addAdmin(String cpf, String name, String numberOfTuition, LocalDate birthdate, String password, Department department) {
         Catalog catalog = Catalog.getInstance();
 
         if(!validateCpf(cpf) || catalog.cpfExists(cpf)) {
-            return;
+            return false;
         }
 
         catalog.insertAdmin(cpf, name, numberOfTuition, birthdate, password, department);
+        return true;
     }
 
     public boolean removeMember(String cpf, LoginUser user) {

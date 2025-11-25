@@ -55,7 +55,6 @@ public class ReviewController {
         for (Review r : reviews) {
             if (r.inRange(dataInicio, dataFim)) {
                 rangeReviews.add(r);
-                break;
             }
         }
 
